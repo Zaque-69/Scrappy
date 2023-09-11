@@ -1,20 +1,13 @@
-import os
-import subprocess
+import os, subprocess
 
-def succes():
-    home = os.getcwd()
-    os.chdir("vbs")
-    subprocess.call("cmd /c succes.vbs")
-    os.chdir(home)
+def decorateMSGBoxes(function):
+    def wrapper(*args, **kwargs):
+        home = os.getcwd()
+        os.chdir("vbs")
+        function(*args, **kwargs)
+        os.chdir(home)
+    return wrapper
 
-def searchError():
-    home = os.getcwd()
-    os.chdir("vbs")
-    subprocess.call("cmd /c searchError.vbs")
-    os.chdir(home)
-
-def expiredProxy():
-    home = os.getcwd()
-    os.chdir("vbs")
-    subprocess.call("cmd /c expiredProxy.vbs")
-    os.chdir(home)
+@decorateMSGBoxes
+def showMSGBox(arg):
+    subprocess.call(f"cmd /c {arg}.vbs")
