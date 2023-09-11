@@ -15,6 +15,8 @@ def multiThreadingDirrs(f, startParam, endParam):
     for line in hid[int(startParam):int(endParam)]:
         response = request(f + line.strip())
         if response:
-            with open("Files/hidden_adr.txt", "a") as file:
-                file.write(f + line.strip())
-                file.write("\n")
+            try:
+                with open("Files/hidden_adr.txt", "a") as file:
+                    file.write(f + line.strip())
+                    file.write("\n")
+            except : pass
