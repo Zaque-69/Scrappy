@@ -67,13 +67,14 @@ class scrap:
 
         self.phtotExtensions = ["jpeg", "jpg", "png", "gif", 
                                "tiff", "psd", "pdf", "eps", "ai"]
-    
+        
         self.need2Delete = ['output', 'changedIp', 'currentIp', 'st',
                              'userAgent' 'afis', 'domains', 'totalFiles']
 
         with open("Files/hidden_adr.txt", "w") as nush: pass
 
-    def openservers(self) : os.system('Files\ValidPr.txt')
+    def openservers(self) : 
+        os.system('Files\ValidPr.txt')
 
     def searchLink(self):
         SEARCH = self.search.get()
@@ -91,6 +92,7 @@ class scrap:
         self.currentIp.delete(0, 'end')
         self.changedIp.delete(0, 'end')
         self.st.delete(0, 'end')
+        self.totalFiles.delete(0, 'end')
 
         self.userAgent.delete('1.0', END)
         self.domains.delete('1.0', END)
@@ -126,10 +128,12 @@ class scrap:
             start, end = 0, 10
             from threadList import multiThreadingDirrs
 
-            for i in range(10) : 
-                Thread(target = multiThreadingDirrs(INPUT, start, end)).start()
-                start += 10
-                end += 10 
+            for i in range(10):
+                try: 
+                    Thread(target = multiThreadingDirrs(INPUT, start, end)).start()
+                    start += 10
+                    end += 10 
+                except : pass
             
         def getimgName(word):
             fin = ''
@@ -146,23 +150,7 @@ class scrap:
 
 #                    #starting scraping
             try:
-                if len(self.choseYourIp.get()) > 0 : randomValidProxy = self.choseYourIp.get()
-                else:
-                    with open("Files/validPr.txt", "r") as f : 
-                        randomValidProxy = random.choice(f.read().split("\n"))
-                        #print(randomValidProxy)
-
-                if (len(randomValidProxy) == 0):
-                    os.chdir(home)
-                    with open("hidden_adr.txt", "a") as f : f.truncate(0)
-                    os.rmdir(finalName)
-                    showMSGBox('expiredProxy')
-
-                    for i in self.need2Delete : 
-                        try : self.i.delete('1.0', END)
-                        except : pass
-
-                    return
+                randomValidProxy = self.choseYourIp.get()
 
                 gt = requests.get(str(INPUT), headers = {
                     "User-Agent" : randomValue 
@@ -182,13 +170,10 @@ class scrap:
                 getInfoNewIp = requests.get("https://ipinfo.io/json", proxies = {
                     "http" : randomValidProxy, "https" : randomValidProxy
                     })
-
+                
                 print(bcolors.LIGHT_CYAN + 'CHANGED INFO : ')
                 for key, value in json.loads(getInfoNewIp.text).items() : 
                     print(bcolors.OKBLUE + 8*' ' + f'[{key.upper()}] : ' + decorations.ENDC , bcolors.OKCYAN + f'{value}' + decorations.ENDC)
-
-                '''                for key, value in json.loads(getInfoNewIp.text).items() : 
-                    print(8*' ' + f'[{key.upper()}] : ', 'yellow', f'{value}')'''
 
                 mainAtts = ['ip', 'country', 'region']
                 
@@ -199,18 +184,19 @@ class scrap:
                 for i in mainAtts : self.currentIp.insert(END, str(getInfoOldIp.json()[i]) + " ")
 
             except : 
-        
-                try : 
-                    for i in self.need2Delete :  self.i.delete('1.0', END)
-                except :  pass
+                
+                for i in self.need2Delete : 
+                    try : self.i.delete('1.0', END)
+                    except : pass
                 with open('Files/hidden_adr.txt', 'a') as f : f.truncate(0)
-                showMSGBox('expiredProxy')
+                showMSGBox('searchError')
                 return
 
             self.st.insert(END, gt.status_code)
             self.userAgent.insert(END, randomValue)
 
             for i in self.phtotExtensions:
+
                 if i in str(INPUT[-5:]):
                     with open(getimgName(INPUT), "wb") as file : 
                         file.write(gt.content)
@@ -236,8 +222,8 @@ class scrap:
                     
                         if not os.path.isfile(path):
                             with open(path, 'wb') as file:
-                                #filebin = requests.Session().get(url)
-                                file.write(requests.Sesssion().get(url).content)
+                                filebin = requests.Session().get(url)
+                                file.write(filebin.content)
                     except :
                         pass
             
