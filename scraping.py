@@ -26,7 +26,7 @@ class scrap:
         Label(master, bg="#363047", text="Hidden Pages", fg="white", font=(14)).place(x=140, y = 230)
         Label(master, bg="#363047", text="Proxy Info", fg="white", font=(14)).place(x=540, y = 230)
         Label(master, bg="#363047", text="E-mails Found", fg="white", font=(14)).place(x=775, y=30)
-        Label(master, bg="#363047", text="Changed User Agent", fg="white", font=(14)).place(x=755, y=230)
+        Label(master, bg="#363047", text="User Agent", fg="white", font=(14)).place(x=790, y=230)
 
         #entries 
         self.inputtxt = customtkinter.CTkEntry(master, placeholder_text="https://www.example.com/", width=300, height=25, border_width=2, corner_radius=5, fg_color = "#0E0C12", text_color = "white",border_color="#000")
@@ -62,12 +62,14 @@ class scrap:
         self.output = customtkinter.CTkTextbox(master , width=300, height=100, border_width=2, corner_radius=5, fg_color = "#191621", text_color = "#8D8B93", border_color="#0E0C12")
         self.domains = customtkinter.CTkTextbox(master, width=220, height=80, border_width=2, corner_radius=5, fg_color = "#191621", text_color = "#E7CF50", border_color="#0E0C12")
         self.afis = customtkinter.CTkTextbox(master , width=220, height=100, border_width=2, corner_radius=5, fg_color = "#191621", text_color = "#D0669F", border_color="#0E0C12")
-        self.userAgent = customtkinter.CTkTextbox(master, width=220, height=105, border_width=2, corner_radius=5, fg_color = "#191621", text_color = "#74CFC1", border_color="#0E0C12")
+        self.yourUserAgent = customtkinter.CTkEntry(master, placeholder_text="Your User Agent (optional)", width=220, height=25, border_width=2, corner_radius=5, fg_color = "#191621", text_color = "#D0669F", border_color="#0E0C12")
+        self.userAgent = customtkinter.CTkTextbox(master, width=220, height=70, border_width=2, corner_radius=5, fg_color = "#191621", text_color = "#74CFC1", border_color="#0E0C12")
 
         self.output.place(x = 50, y = 270)
         self.afis.place(x = 475, y = 70)
         self.domains.place(x = 725, y = 70)
-        self.userAgent.place(x = 725, y = 266)
+        self.yourUserAgent.place(x = 725, y = 265)
+        self.userAgent.place(x = 725, y = 300)
 
         self.phtotExtensions = ["jpeg", "jpg", "png", "gif", 
                                "tiff", "psd", "pdf", "eps", "ai"]
@@ -138,7 +140,9 @@ class scrap:
         def scr(self):
             global home
             self.afis.delete("1.0", END)
-            randomValue = random.choice(open('Files/ua.txt').readlines()).split('\n')[0]
+
+            if (self.yourUserAgent.get()) : randomValue = self.yourUserAgent.get()
+            else : randomValue = random.choice(open('Files/ua.txt').readlines()).split('\n')[0]
 
             randomValidProxy = ''
 
