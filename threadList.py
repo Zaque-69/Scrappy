@@ -1,4 +1,4 @@
-import requests, os
+import requests
 
 def request(url):
     try:
