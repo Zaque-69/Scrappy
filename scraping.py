@@ -1,9 +1,11 @@
-import os, re, shutil ,requests,  webbrowser, customtkinter, random, json
+import os, re, shutil, requests,  webbrowser, customtkinter, random, json
 
 from tkinter import *
 from threading import Thread
 from bs4 import BeautifulSoup  
 from urllib.parse import urljoin
+
+#local modules
 from messagebox import showMSGBox
 from colored import bcolors, decorations
 
@@ -38,6 +40,7 @@ class scrap:
         self.changedIp = customtkinter.CTkEntry(master, placeholder_text="Changed IP", width=220, height=25, border_width=2, corner_radius=5, fg_color = "#191621", text_color = "#D69044", border_color="#0E0C12") 
 
 
+        #findHidden
         self.inputtxt.place(x = 50, y = 100)
         self.name.place(x = 50, y = 140)
         self.search.place(x = 50, y = 180)
@@ -49,10 +52,11 @@ class scrap:
         self.currentIp.place(x = 475, y = 347) 
 
         #buttosn
-        self.Btn = customtkinter.CTkButton(master, width=60, height=60, text="Run", fg_color="#574E73", hover_color="#706494", text_color="black", border_width=1, corner_radius=5, border_color="#4B4363", command = self.main).place(x = 380, y = 100)
-        self.Btn2 = customtkinter.CTkButton(master, width=60, height=100, text="Reload", fg_color="#574E73", hover_color="#706494", text_color="black", border_width=1, corner_radius=5, border_color="#4B4363", command = self.reload).place(x = 380, y = 270)
-        self.Btn3 = customtkinter.CTkButton(master, width=60, height=30, text="Search", fg_color="#574E73", hover_color="#706494", text_color="black", border_width=1, corner_radius=5, border_color="#4B4363", command = self.searchLink).place(x = 380, y = 177.5)
-        self.Btn4 = customtkinter.CTkButton(master, width=30, height=30, text="Servers", fg_color="#574E73", hover_color="#706494", text_color="black", border_width=1, corner_radius=5, border_color="#4B4363", command = self.openservers).place(x = 645, y = 263.5)
+        customtkinter.CTkButton(master, width=60, height=60, text="Run", fg_color="#574E73", hover_color="#706494", text_color="black", border_width=1, corner_radius=5, border_color="#4B4363", command = self.main).place(x = 380, y = 100)
+        customtkinter.CTkButton(master, width=60, height=40, text="Find", fg_color="#574E73", hover_color="#706494", text_color="black", border_width=1, corner_radius=5, border_color="#4B4363", command = self.threadFindHidden).place(x = 380, y = 270)
+        customtkinter.CTkButton(master, width=60, height=40, text="Reload", fg_color="#574E73", hover_color="#706494", text_color="black", border_width=1, corner_radius=5, border_color="#4B4363", command = self.reload).place(x = 380, y = 330)
+        customtkinter.CTkButton(master, width=60, height=30, text="Search", fg_color="#574E73", hover_color="#706494", text_color="black", border_width=1, corner_radius=5, border_color="#4B4363", command = self.searchLink).place(x = 380, y = 177.5)
+        customtkinter.CTkButton(master, width=30, height=30, text="Servers", fg_color="#574E73", hover_color="#706494", text_color="black", border_width=1, corner_radius=5, border_color="#4B4363", command = self.openservers).place(x = 645, y = 263.5)
 
         #text areas
         self.output = customtkinter.CTkTextbox(master , width=300, height=100, border_width=2, corner_radius=5, fg_color = "#191621", text_color = "#8D8B93", border_color="#0E0C12")
@@ -124,16 +128,6 @@ class scrap:
             global home
             os.chdir(home)
             #subprocess.call("cmd /c generateFunctions.py")
-
-            start, end = 0, 10
-            from threadList import multiThreadingDirrs
-
-            for i in range(10):
-                try: 
-                    Thread(target = multiThreadingDirrs(INPUT, start, end)).start()
-                    start += 10
-                    end += 10 
-                except : pass
             
         def getimgName(word):
             fin = ''
@@ -162,8 +156,6 @@ class scrap:
                     )
                 print(bcolors.HEADER + 'EXIT STATUS CODE : ' + decorations.BOLD + bcolors.LIGHT_RED + f'{gt.raise_for_status} ' + decorations.ENDC)
                 sp = BeautifulSoup(gt.content, "html.parser")
-
-    #                       #gettig ingo 
 
                 getInfoOldIp = requests.get("https://ipinfo.io/json")
 
@@ -273,6 +265,20 @@ class scrap:
 
         os.chdir(home)
         showMSGBox('succes')
+
+    def findHidden(self):
+        self.output.delete("1.0", END)
+        start, end = 0, 10
+        from threadList import multiThreadingDirrs
+
+        for i in range(10):
+            try: 
+                Thread(target = multiThreadingDirrs(str(self.inputtxt.get()), start, end)).start()
+                start += 10
+                end += 10 
+            except : pass
+        
+    def threadFindHidden(self): Thread(target = self.findHidden).start()
 
 root = Tk()
 root.geometry("975x420")
