@@ -12,12 +12,12 @@ def deleteFileData(e):
 for j in truncFiles : Thread(target = deleteFileData(j)).start()
 
 if ( opSys == 'Linux'):
-    def file1():  subprocess.call("python scraping.py")
-    def file2():  subprocess.call("python validateProxy.py")
+    def file1():  subprocess.call("python3 scraping.py",  shell = True)
+    def file2():  subprocess.call("python3 validateProxy.py",  shell = True)
 
 else :
-    def file1():  subprocess.call("cmd /c scraping.py", shell = True)
-    def file2():  subprocess.call("cmd /c validateProxy.py", shell = True)
+    def file1():  subprocess.call("cmd /c scraping.py")
+    def file2():  subprocess.call("cmd /c validateProxy.py")
 
 Thread(target = file1).start()
 Thread(target = file2).start()
