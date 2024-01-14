@@ -11,4 +11,4 @@ def decorateMSGBoxes(function):
 @decorateMSGBoxes
 def showMSGBox(arg):
     try: subprocess.call(f"cmd /c {arg}.vbs")
-    except : subprocess.call(f'wine cscript vbs/{arg}.vbs', shell = True)
+    except : subprocess.call(f'notepad vbs/{arg}.vbs', shell = True)
