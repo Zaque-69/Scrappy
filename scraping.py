@@ -85,7 +85,7 @@ class scrap:
     def openservers(self) : 
         print(os.getcwd())
         try : subprocess.call('Files\ValidPr.txt')
-        except : subprocess.call('cat File\ValidPr.txt', shell = True)
+        except : subprocess.call('cat Files/validPr.txt', shell = True)
 
     def searchLink(self):
         SEARCH = self.search.get()
@@ -152,61 +152,42 @@ class scrap:
             randomValidProxy = ''
 
 #                    #starting scraping
-            try:
-                randomValidProxy = self.choseYourIp.get()
+        
+            randomValidProxy = self.choseYourIp.get()
 
-                if ( len(self.payload.get("0.0", "end")) == 1) : 
 
-                    gt = requests.post(str(INPUT), headers = {
-                        "User-Agent" : randomValue 
-                            },
-                            proxies = {
-                                "http" : randomValidProxy, 
-                                "https" : randomValidProxy
-                            }
-                        )
-                
-                else :
-                    gt = requests.post(str(INPUT), headers = {
-                    "User-Agent" : randomValue 
-                        },
-                        proxies = {
-                            "http" : randomValidProxy, 
-                            "https" : randomValidProxy
-                        }, 
-                        payload = self.payload.get('0.0', 'end')
-                    )
+            gt = requests.post(str(INPUT), headers = {
+                "User-Agent" : randomValue 
+                    },
+                    proxies = {
+                        "http" : randomValidProxy, 
+                        "https" : randomValidProxy
+                    }
+                )
+            
+            
+            print(bcolors.HEADER + 'EXIT STATUS CODE : ' + decorations.BOLD + bcolors.LIGHT_RED + f'{gt.raise_for_status} ' + decorations.ENDC)
+            sp = BeautifulSoup(gt.content, "html.parser")
 
-                
-                print(bcolors.HEADER + 'EXIT STATUS CODE : ' + decorations.BOLD + bcolors.LIGHT_RED + f'{gt.raise_for_status} ' + decorations.ENDC)
-                sp = BeautifulSoup(gt.content, "html.parser")
+            getInfoOldIp = requests.get("https://ipinfo.io/json")
 
-                getInfoOldIp = requests.get("https://ipinfo.io/json")
+            getInfoNewIp = requests.get("https://ipinfo.io/json", proxies = {
+                "http" : randomValidProxy, "https" : randomValidProxy
+                })
+            
+            print(bcolors.LIGHT_CYAN + 'CHANGED INFO : ')
+            for key, value in json.loads(getInfoNewIp.text).items() : 
+                print(bcolors.OKBLUE + 8*' ' + f'[{key.upper()}] : ' + decorations.ENDC , bcolors.OKCYAN + f'{value}' + decorations.ENDC)
 
-                getInfoNewIp = requests.get("https://ipinfo.io/json", proxies = {
-                    "http" : randomValidProxy, "https" : randomValidProxy
-                    })
-                
-                print(bcolors.LIGHT_CYAN + 'CHANGED INFO : ')
-                for key, value in json.loads(getInfoNewIp.text).items() : 
-                    print(bcolors.OKBLUE + 8*' ' + f'[{key.upper()}] : ' + decorations.ENDC , bcolors.OKCYAN + f'{value}' + decorations.ENDC)
+            mainAtts = ['ip', 'country', 'region']
+            
+            self.changedIp.insert(END, "Changed Information : ")
+            self.currentIp.insert(END, "Your Information : ")
 
-                mainAtts = ['ip', 'country', 'region']
-                
-                self.changedIp.insert(END, "Changed Information : ")
-                self.currentIp.insert(END, "Your Information : ")
+            for i in mainAtts : self.changedIp.insert(END, str(getInfoNewIp.json()[i]) + " ")
+            for i in mainAtts : self.currentIp.insert(END, str(getInfoOldIp.json()[i]) + " ")
 
-                for i in mainAtts : self.changedIp.insert(END, str(getInfoNewIp.json()[i]) + " ")
-                for i in mainAtts : self.currentIp.insert(END, str(getInfoOldIp.json()[i]) + " ")
-
-            except : 
-                
-                for i in self.need2Delete : 
-                    try : self.i.delete('1.0', END)
-                    except : pass
-                with open('Files/hidden_adr.txt', 'a') as f : f.truncate(0)
-                showMSGBox('searchError')
-                return
+            
 
             self.st.insert(END, gt.status_code)
             self.userAgent.insert(END, randomValue)
@@ -314,3 +295,5 @@ root.title("Web Scraping")
 ah = scrap(root)
         
 if __name__ == "__main__": root.mainloop()
+
+#sudo yay -S zenity
