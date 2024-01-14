@@ -1,0 +1,1 @@
+zenity --info --text="Looks like your page doent'exists or you insert an invalid url. Please go back or be sure to check url and try again."
