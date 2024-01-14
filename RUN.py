@@ -1,4 +1,4 @@
-import subprocess, platform
+import subprocess
 from threading import Thread
 
 truncFiles = ["Files/newestProxy.txt", "Files/validPr.txt"]
@@ -11,13 +11,8 @@ def deleteFileData(e):
 
 for j in truncFiles : Thread(target = deleteFileData(j)).start()
 
-if ( opSys == 'Linux'):
-    def file1():  subprocess.call("python3 scraping.py",  shell = True)
-    def file2():  subprocess.call("python3 validateProxy.py",  shell = True)
-
-else :
-    def file1():  subprocess.call("cmd /c scraping.py")
-    def file2():  subprocess.call("cmd /c validateProxy.py")
+def file1():  subprocess.call("cmd /c scraping.py")
+def file2():  subprocess.call("cmd /c validateProxy.py")
 
 Thread(target = file1).start()
 Thread(target = file2).start()
