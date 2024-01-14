@@ -1,14 +1,2 @@
-import os, subprocess
-
-def decorateMSGBoxes(function):
-    def wrapper(*args, **kwargs):
-        home = os.getcwd()
-        os.chdir("vbs")
-        function(*args, **kwargs)
-        os.chdir(home)
-    return wrapper
-
-@decorateMSGBoxes
-def showMSGBox(arg):
-    try: subprocess.call(f"cmd /c {arg}.vbs")
-    except : subprocess.call(f'notepad vbs/{arg}.vbs', shell = True)
+import subprocess
+def showMSGBox(arg): subprocess.call(f'notepad vbs/{arg}.vbs', shell = True)
