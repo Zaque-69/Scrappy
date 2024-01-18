@@ -3,8 +3,6 @@ from threading import Thread
 
 truncFiles = ["Files/newestProxy.txt", "Files/validPr.txt"]
 
-opSys = platform.system()
-
 def deleteFileData(e):
     with open(f"{e}", "a") as f : 
         f.truncate(0)
