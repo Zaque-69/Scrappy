@@ -1,4 +1,4 @@
-# SCOOBY
+# SCRAPPY
 
 Simple website file downloader 
 
